@@ -32,13 +32,12 @@ export function AdminPanel() {
         setShowPasswordError(false);
 
         try {
-            const response = await fetch(deployHookUrl, {
+            // Použijeme mode: 'no-cors', protože Cloudflare API webhooky nepodporují CORS 
+            // pro přímé volání z prohlížeče. Požadavek se odešle, ale odpověď bude "neprůhledná".
+            await fetch(deployHookUrl, {
                 method: 'POST',
+                mode: 'no-cors',
             });
-
-            if (!response.ok) {
-                throw new Error(`Cloudflare odpověděl chybou: ${response.status}`);
-            }
 
             setDeployStatus('success');
         } catch (err: any) {
