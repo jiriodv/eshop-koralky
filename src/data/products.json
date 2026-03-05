@@ -1,0 +1,20 @@
+[
+  {
+    "id": "p1",
+    "name": "Nebeská harmonie",
+    "price": 349,
+    "description": "Jemný náramek z modrého chalcedonu a kříšťálu ručně navlečený pro klid a vyrovnanost.",
+    "category": "Náramky",
+    "imageUrl": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=2070&auto=format&fit=crop",
+    "inStock": true
+  },
+  {
+    "id": "p2",
+    "name": "Kokot do huby",
+    "price": 150,
+    "description": "",
+    "category": "Nezarazeno",
+    "imageUrl": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=2070&auto=format&fit=crop",
+    "inStock": true
+  }
+]
