@@ -37,7 +37,7 @@ export const Contact = () => {
     };
 
     return (
-        <section className="section contact-section" id="kontakt">
+        <section className="section contact-section reveal active" id="kontakt">
             <div className="container contact-container">
                 <motion.div
                     initial={{ opacity: 0, x: -30 }}
@@ -80,7 +80,7 @@ export const Contact = () => {
                     initial={{ opacity: 0, x: 30 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className="contact-form-wrapper glass"
+                    className="contact-form-wrapper"
                 >
                     <AnimatePresence mode="wait">
                         {submitted ? (
@@ -104,20 +104,22 @@ export const Contact = () => {
                                 className="contact-form"
                             >
                                 <div className="form-group">
-                                    <label htmlFor="name">Jméno</label>
+                                    <label htmlFor="user_name">Jméno</label>
                                     <input
                                         type="text"
-                                        id="name"
+                                        id="user_name"
+                                        name="user_name"
                                         required
                                         value={formState.name}
                                         onChange={e => setFormState({ ...formState, name: e.target.value })}
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="email">E-mail</label>
+                                    <label htmlFor="user_email">E-mail</label>
                                     <input
                                         type="email"
-                                        id="email"
+                                        id="user_email"
+                                        name="user_email"
                                         required
                                         value={formState.email}
                                         onChange={e => setFormState({ ...formState, email: e.target.value })}
@@ -127,6 +129,7 @@ export const Contact = () => {
                                     <label htmlFor="message">Zpráva</label>
                                     <textarea
                                         id="message"
+                                        name="message"
                                         rows={4}
                                         required
                                         value={formState.message}

@@ -26,7 +26,7 @@ export const CookieBanner = () => {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: 150, opacity: 0 }}
                     transition={{ type: "spring", damping: 20 }}
-                    className="cookie-banner glass"
+                    className="cookie-banner"
                 >
                     <div className="cookie-content">
                         <h4>Tento web používá soubory cookies 🍪</h4>

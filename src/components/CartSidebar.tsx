@@ -42,7 +42,7 @@ export const CartSidebar = ({
                         animate={{ x: 0 }}
                         exit={{ x: '100%' }}
                         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                        className="cart-sidebar glass"
+                        className="cart-sidebar"
                     >
                         <div className="cart-header">
                             <h3>Váš Košík</h3>

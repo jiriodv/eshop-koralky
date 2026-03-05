@@ -20,7 +20,7 @@ export const Navbar = ({ cartCount, onCartClick }: NavbarProps) => {
     }, []);
 
     return (
-        <header className={`navbar ${scrolled ? 'navbar-scrolled glass' : ''}`}>
+        <header className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
             <div className="container navbar-container">
                 <a href="/" className="logo">
                     Aurora <span>Beads</span>

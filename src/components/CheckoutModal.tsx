@@ -73,37 +73,38 @@ export const CheckoutModal = ({ isOpen, onClose, onSuccess, totalAmount }: Check
                                     </div>
 
                                     <form onSubmit={handleSubmit} className="checkout-form">
+                                        <input type="hidden" name="total_amount" value={`${totalAmount} Kč`} />
                                         <div className="form-row">
                                             <div className="form-group">
-                                                <label>Jméno a příjmení *</label>
-                                                <input type="text" required placeholder="Jan Novák" />
+                                                <label htmlFor="user_name">Jméno a příjmení *</label>
+                                                <input type="text" id="user_name" name="user_name" required placeholder="Jan Novák" />
                                             </div>
                                         </div>
 
                                         <div className="form-row">
                                             <div className="form-group">
-                                                <label>E-mail *</label>
-                                                <input type="email" required placeholder="jan.novak@email.cz" />
+                                                <label htmlFor="user_email">E-mail *</label>
+                                                <input type="email" id="user_email" name="user_email" required placeholder="jan.novak@email.cz" />
                                             </div>
                                             <div className="form-group">
-                                                <label>Telefon *</label>
-                                                <input type="tel" required placeholder="+420 123 456 789" />
+                                                <label htmlFor="user_phone">Telefon *</label>
+                                                <input type="tel" id="user_phone" name="user_phone" required placeholder="+420 123 456 789" />
                                             </div>
                                         </div>
 
-                                        <div className="form-group">
-                                            <label>Doručovací adresa *</label>
-                                            <input type="text" required placeholder="Ulice a číslo popisné" />
+                                        <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+                                            <label htmlFor="address">Doručovací adresa *</label>
+                                            <input type="text" id="address" name="address" required placeholder="Ulice a číslo popisné" />
                                         </div>
 
                                         <div className="form-row">
                                             <div className="form-group">
-                                                <label>Město *</label>
-                                                <input type="text" required placeholder="Praha" />
+                                                <label htmlFor="city">Město *</label>
+                                                <input type="text" id="city" name="city" required placeholder="Praha" />
                                             </div>
                                             <div className="form-group">
-                                                <label>PSČ *</label>
-                                                <input type="text" required placeholder="110 00" />
+                                                <label htmlFor="zip">PSČ *</label>
+                                                <input type="text" id="zip" name="zip" required placeholder="110 00" />
                                             </div>
                                         </div>
 
@@ -115,7 +116,7 @@ export const CheckoutModal = ({ isOpen, onClose, onSuccess, totalAmount }: Check
                                         </div>
 
                                         <button type="submit" className="btn btn-primary submit-btn" disabled={isSubmitting}>
-                                            {isSubmitting ? 'Zpracovávám...' : 'Závazně objednat a zaplatit'}
+                                            {isSubmitting ? 'Zpracovávám...' : 'Dokončit objednávku'}
                                         </button>
                                     </form>
                                 </div>
