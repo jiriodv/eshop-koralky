@@ -69,7 +69,7 @@ export const CartSidebar = ({
                                                 key={item.id}
                                                 className="cart-item"
                                             >
-                                                <img src={item.imageUrl} alt={item.name} className="cart-item-img" />
+                                                <img src={item.imageUrl} alt={item.name} className="cart-item-img" referrerPolicy="no-referrer" />
                                                 <div className="cart-item-info">
                                                     <h4>{item.name}</h4>
                                                     <span className="cart-item-price">{item.price} Kč</span>

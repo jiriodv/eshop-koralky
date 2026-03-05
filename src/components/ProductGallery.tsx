@@ -1,21 +1,21 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag } from 'lucide-react';
-import { mockProducts } from '../data/mockProducts';
 import './ProductGallery.css';
 
 interface ProductGalleryProps {
+    products: any[];
     onAddToCart: (productId: string) => void;
 }
 
-export const ProductGallery = ({ onAddToCart }: ProductGalleryProps) => {
+export const ProductGallery = ({ products, onAddToCart }: ProductGalleryProps) => {
     const [filter, setFilter] = useState('Vše');
 
-    const categories = ['Vše', ...Array.from(new Set(mockProducts.map(p => p.category)))];
+    const categories = ['Vše', ...Array.from(new Set(products.map(p => p.category || 'Nezarazeno')))];
 
     const filteredProducts = filter === 'Vše'
-        ? mockProducts
-        : mockProducts.filter(p => p.category === filter);
+        ? products
+        : products.filter(p => p.category === filter);
 
     return (
         <section className="section gallery-section reveal active" id="kolekce">
@@ -56,7 +56,13 @@ export const ProductGallery = ({ onAddToCart }: ProductGalleryProps) => {
                                 className="product-card"
                             >
                                 <div className="product-image-container">
-                                    <img src={product.imageUrl} alt={product.name} className="product-image" loading="lazy" />
+                                    <img
+                                        src={product.imageUrl}
+                                        alt={product.name}
+                                        className="product-image"
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer"
+                                    />
                                     {!product.inStock && <div className="out-of-stock-badge">Vyprodáno</div>}
 
                                     <div className="product-overlay">
@@ -72,7 +78,7 @@ export const ProductGallery = ({ onAddToCart }: ProductGalleryProps) => {
 
                                 <div className="product-info">
                                     <div className="product-top">
-                                        <span className="product-category">{product.category}</span>
+                                        <span className="product-category">{product.category || 'Nezarazeno'}</span>
                                         <span className="product-price">{product.price} Kč</span>
                                     </div>
                                     <h3 className="product-name">{product.name}</h3>

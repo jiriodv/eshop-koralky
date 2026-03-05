@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ProductGallery } from './components/ProductGallery';
@@ -8,12 +8,63 @@ import { Contact } from './components/Contact';
 import { CheckoutModal } from './components/CheckoutModal';
 import { CookieBanner } from './components/CookieBanner';
 import { AdminPanel } from './components/AdminPanel';
-import { mockProducts } from './data/mockProducts';
+
+// Pomocná funkce pro převod Google Drive odkazů na přímé (drive.google.com/thumbnail)
+const fixDriveUrl = (url: string) => {
+  if (!url) return url;
+  if (url.includes('drive.google.com/thumbnail')) return url;
+
+  const idMatch = url.match(/id=([a-zA-Z0-9_-]{25,})/);
+  const pathMatch = url.match(/\/d\/([a-zA-Z0-9_-]{25,})/);
+  const match = url.match(/[a-zA-Z0-9_-]{25,}/);
+
+  const fileId = idMatch ? idMatch[1] : (pathMatch ? pathMatch[1] : (match ? match[0] : null));
+
+  if (fileId && fileId.length >= 25) {
+    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1200`;
+  }
+  return url;
+};
 
 function MainShop() {
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [cartItems, setCartItems] = useState<{ id: string; quantity: number }[]>([]);
+
+  // Inicializace z localStorage pro okamžité zobrazení
+  const [products, setProducts] = useState<any[]>(() => {
+    const cached = localStorage.getItem('shop_products_cache');
+    return cached ? JSON.parse(cached) : [];
+  });
+
+  const [loading, setLoading] = useState(() => {
+    const cached = localStorage.getItem('shop_products_cache');
+    return !cached; // Loading jen pokud nemáme nic v cache
+  });
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const scriptUrl = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
+      if (!scriptUrl) {
+        setLoading(false);
+        return;
+      }
+      try {
+        const response = await fetch(scriptUrl);
+        const data = await response.json();
+        if (data && data.products) {
+          const fixedProducts = data.products.map((p: any) => ({ ...p, imageUrl: fixDriveUrl(p.imageUrl) }));
+          setProducts(fixedProducts);
+          localStorage.setItem('shop_products_cache', JSON.stringify(fixedProducts));
+        }
+        setLoading(false);
+      } catch (err) {
+        console.error('Chyba načítání produktů pro web:', err);
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const handleAddToCart = (productId: string) => {
     setCartItems(prev => {
@@ -41,9 +92,10 @@ function MainShop() {
   };
 
   const cartItemsWithData = cartItems.map(item => {
-    const product = mockProducts.find(p => p.id === item.id)!;
+    const product = products.find(p => p.id === item.id);
+    if (!product) return null;
     return { ...product, quantity: item.quantity };
-  });
+  }).filter((item): item is any => item !== null);
 
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -53,7 +105,11 @@ function MainShop() {
 
       <main>
         <Hero />
-        <ProductGallery onAddToCart={handleAddToCart} />
+        {loading ? (
+          <div style={{ padding: '4rem', textAlign: 'center' }}>Načítám kolekci...</div>
+        ) : (
+          <ProductGallery products={products} onAddToCart={handleAddToCart} />
+        )}
         <Contact />
       </main>
 
@@ -98,6 +154,7 @@ function MainShop() {
                 <li><a href="#gdpr" id="gdpr">Ochrana osobních údajů</a></li>
                 <li><a href="#doprava">Doprava a platba</a></li>
                 <li><a href="#reklamace">Reklamační řád</a></li>
+                <li className="footer-admin-link"><Link to="/admin">Administrace</Link></li>
               </ul>
             </div>
           </div>
