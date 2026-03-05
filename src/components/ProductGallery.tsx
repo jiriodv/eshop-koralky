@@ -18,7 +18,7 @@ export const ProductGallery = ({ onAddToCart }: ProductGalleryProps) => {
         : mockProducts.filter(p => p.category === filter);
 
     return (
-        <section className="section gallery-section" id="kolekce">
+        <section className="section gallery-section reveal active" id="kolekce">
             <div className="container">
                 <div className="gallery-header">
                     <motion.h2
@@ -44,7 +44,7 @@ export const ProductGallery = ({ onAddToCart }: ProductGalleryProps) => {
                 </div>
 
                 <motion.div layout className="product-grid">
-                    <AnimatePresence>
+                    <AnimatePresence mode="popLayout">
                         {filteredProducts.map((product) => (
                             <motion.div
                                 layout
@@ -53,15 +53,15 @@ export const ProductGallery = ({ onAddToCart }: ProductGalleryProps) => {
                                 exit={{ opacity: 0, scale: 0.9 }}
                                 transition={{ duration: 0.4 }}
                                 key={product.id}
-                                className="product-card glass"
+                                className="product-card"
                             >
                                 <div className="product-image-container">
-                                    <img src={product.imageUrl} alt={product.name} className="product-image" />
+                                    <img src={product.imageUrl} alt={product.name} className="product-image" loading="lazy" />
                                     {!product.inStock && <div className="out-of-stock-badge">Vyprodáno</div>}
 
                                     <div className="product-overlay">
                                         <button
-                                            className="add-to-cart-btn btn btn-primary"
+                                            className="add-to-cart-btn btn"
                                             onClick={() => onAddToCart(product.id)}
                                             disabled={!product.inStock}
                                         >
@@ -71,13 +71,13 @@ export const ProductGallery = ({ onAddToCart }: ProductGalleryProps) => {
                                 </div>
 
                                 <div className="product-info">
-                                    <div>
+                                    <div className="product-top">
                                         <span className="product-category">{product.category}</span>
-                                        <h3 className="product-name">{product.name}</h3>
+                                        <span className="product-price">{product.price} Kč</span>
                                     </div>
-                                    <span className="product-price">{product.price} Kč</span>
+                                    <h3 className="product-name">{product.name}</h3>
+                                    <p className="product-description">{product.description}</p>
                                 </div>
-                                <p className="product-description">{product.description}</p>
                             </motion.div>
                         ))}
                     </AnimatePresence>

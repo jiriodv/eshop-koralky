@@ -81,29 +81,29 @@ function MainShop() {
 
       <CookieBanner />
 
-      <footer style={{ padding: '4rem 0 2rem', borderTop: '1px solid var(--glass-border)', backgroundColor: 'var(--bg-color)' }}>
+      <footer className="footer">
         <div className="container">
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem', justifyContent: 'space-between', marginBottom: '3rem' }}>
-            <div style={{ flex: '1 1 300px' }} id="o-nas">
-              <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '2rem', marginBottom: '1rem' }}>Aurora Beads</h2>
-              <p style={{ color: 'var(--text-secondary)', maxWidth: '400px' }}>
+          <div className="footer-grid">
+            <div className="footer-brand" id="o-nas">
+              <h2 className="footer-logo">Aurora Beads</h2>
+              <p className="footer-tagline">
                 Věříme, že každý šperk by měl vyprávět příběh. Z lásky k řemeslu a přírodním materiálům tvoříme unikátní kousky, které podtrhnou vaši jedinečnost.
               </p>
             </div>
 
-            <div style={{ flex: '1 1 200px' }}>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', fontFamily: 'var(--font-heading)' }}>Informace</h3>
-              <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', color: 'var(--text-secondary)' }}>
-                <li><a href="#obchodni-podminky" id="obchodni-podminky" style={{ textDecoration: 'underline' }}>Obchodní podmínky</a></li>
-                <li><a href="#gdpr" id="gdpr" style={{ textDecoration: 'underline' }}>Ochrana osobních údajů</a></li>
-                <li><a href="#doprava" style={{ textDecoration: 'underline' }}>Doprava a platba</a></li>
-                <li><a href="#reklamace" style={{ textDecoration: 'underline' }}>Reklamační řád</a></li>
+            <div className="footer-links-group">
+              <h3 className="footer-title">Informace</h3>
+              <ul className="footer-links">
+                <li><a href="#obchodni-podminky" id="obchodni-podminky">Obchodní podmínky</a></li>
+                <li><a href="#gdpr" id="gdpr">Ochrana osobních údajů</a></li>
+                <li><a href="#doprava">Doprava a platba</a></li>
+                <li><a href="#reklamace">Reklamační řád</a></li>
               </ul>
             </div>
           </div>
 
-          <div style={{ borderTop: '1px solid var(--glass-border)', paddingTop: '2rem', color: 'var(--text-secondary)', fontSize: '0.9rem', textAlign: 'center' }}>
-            &copy; 2026 Aurora Beads. Vytvořeno s láskou v ČR.
+          <div className="footer-bottom">
+            &copy; {new Date().getFullYear()} Aurora Beads. Vytvořeno s láskou v ČR.
           </div>
         </div>
       </footer>

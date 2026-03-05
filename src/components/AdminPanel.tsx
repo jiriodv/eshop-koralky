@@ -6,12 +6,20 @@ export function AdminPanel() {
     const [isDeploying, setIsDeploying] = useState(false);
     const [deployStatus, setDeployStatus] = useState<'idle' | 'success' | 'error'>('idle');
     const [errorMessage, setErrorMessage] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPasswordError, setShowPasswordError] = useState(false);
 
-    // Tato hodnota by měla pocházet z .env, ale pro účely ukázky/UI zde máme zástupnou logiku, 
-    // případně uživatel URL webhooku zadá přímo do .env souboru: VITE_CLOUDFLARE_DEPLOY_HOOK
     const deployHookUrl = import.meta.env.VITE_CLOUDFLARE_DEPLOY_HOOK;
+    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
+
+    const isAuthorized = password === adminPassword;
 
     const handleUpdate = async () => {
+        if (!isAuthorized) {
+            setShowPasswordError(true);
+            return;
+        }
+
         if (!deployHookUrl) {
             setDeployStatus('error');
             setErrorMessage('Deploy Hook URL není nastavena v proměnných prostředí (.env).');
@@ -21,6 +29,7 @@ export function AdminPanel() {
         setIsDeploying(true);
         setDeployStatus('idle');
         setErrorMessage('');
+        setShowPasswordError(false);
 
         try {
             const response = await fetch(deployHookUrl, {
@@ -41,46 +50,69 @@ export function AdminPanel() {
     };
 
     return (
-        <div style={{ padding: '6rem 2rem 2rem', maxWidth: '800px', margin: '0 auto', minHeight: '80vh' }}>
-            <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', marginBottom: '1.5rem', color: 'var(--text-primary)' }}>
-                Administrace E-shopu
-            </h1>
+        <div className="admin-container">
+            <h1 className="admin-title">Administrace E-shopu</h1>
 
-            <div style={{
-                backgroundColor: 'var(--glass-bg)',
-                border: '1px solid var(--glass-border)',
-                borderRadius: 'var(--radius-lg)',
-                padding: '2rem',
-                boxShadow: '0 8px 32px var(--glass-shadow)'
-            }}>
-                <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--text-primary)' }}>
-                    Aktualizace produktů
-                </h2>
+            <div className="admin-card">
+                <h2 className="admin-subtitle">Aktualizace produktů</h2>
 
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', lineHeight: 1.6 }}>
+                <p className="admin-text">
                     Kliknutím na tlačítko níže odešlete signál do Cloudflare, aby provedl nové sestavení (build) webu.
                     Během tohoto procesu si web stáhne nejnovější data z vaší napojené Google Tabulky. <br /><br />
-                    <strong>Pozor:</strong> Zpracování nového buildu může trvat přibližně 1-3 minuty. Změny se na webu projeví až po dokončení tohoto procesu.
+                    <strong>Pozor:</strong> Zabezpečený přístup. Pro aktivaci tlačítka zadejte administrační heslo.
                 </p>
 
+                <div style={{ marginBottom: '2.5rem', maxWidth: '300px' }}>
+                    <label style={{
+                        display: 'block',
+                        marginBottom: '0.8rem',
+                        fontSize: '0.85rem',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        color: 'var(--text-secondary)'
+                    }}>
+                        Administrační heslo
+                    </label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => {
+                            setPassword(e.target.value);
+                            setShowPasswordError(false);
+                        }}
+                        placeholder="Zadejte heslo..."
+                        style={{
+                            width: '100%',
+                            padding: '1rem',
+                            borderRadius: 'var(--radius-md)',
+                            border: showPasswordError ? '2px solid #dc2626' : '1.5px solid rgba(0,0,0,0.05)',
+                            backgroundColor: 'var(--bg-color)',
+                            color: 'var(--text-primary)',
+                            fontSize: '1rem',
+                            outline: 'none',
+                            transition: 'all 0.3s ease'
+                        }}
+                    />
+                    {showPasswordError && (
+                        <span style={{ color: '#dc2626', fontSize: '0.85rem', marginTop: '0.5rem', display: 'block' }}>
+                            Nesprávné heslo
+                        </span>
+                    )}
+                </div>
+
                 <motion.button
-                    whileHover={{ scale: isDeploying ? 1 : 1.02 }}
-                    whileTap={{ scale: isDeploying ? 1 : 0.98 }}
+                    whileHover={{ scale: (isDeploying || !isAuthorized) ? 1 : 1.02 }}
+                    whileTap={{ scale: (isDeploying || !isAuthorized) ? 1 : 0.98 }}
                     onClick={handleUpdate}
-                    disabled={isDeploying}
+                    disabled={isDeploying || !isAuthorized}
+                    className="btn btn-primary"
                     style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.8rem',
-                        padding: '1rem 2rem',
-                        backgroundColor: isDeploying ? 'var(--text-secondary)' : 'var(--accent-color)',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: 'var(--radius-full)',
-                        fontSize: '1.1rem',
-                        fontWeight: 500,
-                        cursor: isDeploying ? 'not-allowed' : 'pointer',
-                        transition: 'background-color 0.3s ease'
+                        width: 'fit-content',
+                        padding: '1rem 2.5rem',
+                        opacity: isAuthorized ? 1 : 0.4,
+                        cursor: isAuthorized ? 'pointer' : 'not-allowed',
+                        filter: isAuthorized ? 'none' : 'grayscale(1)'
                     }}
                 >
                     <RefreshCw className={isDeploying ? 'spin-animation' : ''} size={20} />
@@ -91,7 +123,7 @@ export function AdminPanel() {
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.2)', borderRadius: 'var(--radius-md)', color: '#16a34a', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                        className="admin-status-box status-success"
                     >
                         <CheckCircle2 size={20} />
                         Signál byl úspěšně odeslán. Web bude za 1-3 minuty aktualizován. Zkuste pak obnovit stránku.
@@ -102,23 +134,13 @@ export function AdminPanel() {
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: 'var(--radius-md)', color: '#dc2626', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                        className="admin-status-box status-error"
                     >
                         <AlertCircle size={20} />
                         Chyba: {errorMessage}
                     </motion.div>
                 )}
             </div>
-
-            <style>{`
-        .spin-animation {
-          animation: spin 1.5s linear infinite;
-        }
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
         </div>
     );
 }

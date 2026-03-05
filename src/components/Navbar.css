@@ -3,13 +3,18 @@
     top: 0;
     left: 0;
     width: 100%;
-    padding: 1.5rem 0;
+    padding: 2rem 0;
     z-index: 1000;
     transition: var(--transition-smooth);
 }
 
 .navbar-scrolled {
     padding: 1rem 0;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
 }
 
 .navbar-container {
@@ -20,39 +25,51 @@
 
 .logo {
     font-family: var(--font-heading);
-    font-size: 1.8rem;
-    font-weight: 600;
+    font-size: 2rem;
+    font-weight: 500;
     color: var(--text-primary);
     letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .logo span {
     color: var(--accent-color);
     font-style: italic;
+    font-weight: 400;
+    font-size: 1.8rem;
 }
 
 .nav-links {
     display: flex;
-    gap: 2.5rem;
+    gap: 3rem;
 }
 
 .nav-links a {
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
     position: relative;
+    transition: var(--transition-fast);
+}
+
+.nav-links a:hover {
+    color: var(--text-primary);
 }
 
 .nav-links a::after {
     content: '';
     position: absolute;
     width: 0;
-    height: 2px;
-    bottom: -4px;
-    left: 0;
+    height: 1.5px;
+    bottom: -6px;
+    left: 50%;
     background-color: var(--accent-color);
     transition: var(--transition-smooth);
+    transform: translateX(-50%);
 }
 
 .nav-links a:hover::after {
@@ -62,12 +79,12 @@
 .nav-actions {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 .cart-btn,
 .mobile-toggle {
-    background: none;
+    background: transparent;
     border: none;
     color: var(--text-primary);
     cursor: pointer;
@@ -76,6 +93,7 @@
     justify-content: center;
     transition: var(--transition-smooth);
     position: relative;
+    padding: 0.5rem;
 }
 
 .cart-btn:hover {
@@ -85,18 +103,19 @@
 
 .cart-badge {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: 0;
+    right: 0;
     background-color: var(--accent-color);
     color: #fff;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 4px 8px rgba(157, 124, 95, 0.3);
 }
 
 .mobile-toggle {
@@ -104,24 +123,31 @@
 }
 
 @media (max-width: 768px) {
+    .navbar {
+        padding: 1.5rem 0;
+    }
+
     .nav-links {
         position: fixed;
         top: 0;
         right: -100%;
-        width: 80%;
-        max-width: 400px;
+        width: 100%;
         height: 100vh;
         background-color: var(--bg-color);
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 2rem;
+        gap: 3rem;
         transition: var(--transition-smooth);
-        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
+        z-index: 1000;
     }
 
     .nav-links.open {
         right: 0;
+    }
+
+    .nav-links a {
+        font-size: 1.5rem;
     }
 
     .mobile-toggle {
