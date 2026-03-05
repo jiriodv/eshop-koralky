@@ -10,11 +10,20 @@
   },
   {
     "id": "p2",
-    "name": "Kokot do huby",
+    "name": "Trimakasi",
     "price": 150,
     "description": "",
     "category": "Nezarazeno",
     "imageUrl": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=2070&auto=format&fit=crop",
     "inStock": true
+  },
+  {
+    "id": "p3",
+    "name": "Náramek Miro",
+    "price": 1000,
+    "description": "",
+    "category": "Nezarazeno",
+    "imageUrl": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=2070&auto=format&fit=crop",
+    "inStock": false
   }
 ]
